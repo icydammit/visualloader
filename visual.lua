@@ -1,5 +1,5 @@
 -- Loading Screen | icydammit
--- Popcorn + Candy Theme (WITH RUNNING TEXT)
+-- Popcorn + Candy Theme (HACKER TYPING EDITION)
 
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
@@ -30,7 +30,7 @@ grad.Color = ColorSequence.new{
     ColorSequenceKeypoint.new(1, Color3.fromRGB(80,50,20))
 }
 
--- 🍬 RUNNING TEXT KIRI (BYPASS)
+-- 🍬 BYPASS (KIRI)
 local BypassText = Instance.new("TextLabel")
 BypassText.Size = UDim2.new(0,150,0,40)
 BypassText.Position = UDim2.new(0,20,0.35,0)
@@ -42,7 +42,6 @@ BypassText.TextSize = 22
 BypassText.TextXAlignment = Enum.TextXAlignment.Left
 BypassText.Parent = Background
 
--- blinking
 task.spawn(function()
     while true do
         BypassText.TextTransparency = 0
@@ -52,24 +51,22 @@ task.spawn(function()
     end
 end)
 
--- 🍭 RUNNING TEXT KANAN (PROCESSING)
+-- 🍭 PROCESSING (KANAN)
 local ProcessingText = Instance.new("TextLabel")
-ProcessingText.Size = UDim2.new(0,200,0,40)
-ProcessingText.Position = UDim2.new(1,-220,0.35,0)
+ProcessingText.Size = UDim2.new(0,220,0,40)
+ProcessingText.Position = UDim2.new(1,-240,0.35,0)
 ProcessingText.BackgroundTransparency = 1
-ProcessingText.Text = "PROCESSING 🍭"
 ProcessingText.TextColor3 = Color3.fromRGB(255,200,120)
 ProcessingText.Font = Enum.Font.GothamBold
 ProcessingText.TextSize = 22
 ProcessingText.TextXAlignment = Enum.TextXAlignment.Right
 ProcessingText.Parent = Background
 
--- animasi titik
 task.spawn(function()
     local dot = 1
     while true do
         ProcessingText.Text = "PROCESSING" .. string.rep(".", dot) .. " 🍭"
-        dot = dot + 1
+        dot += 1
         if dot > 3 then dot = 1 end
         task.wait(0.5)
     end
@@ -83,17 +80,42 @@ Card.BackgroundColor3 = Color3.fromRGB(255,235,200)
 Card.Parent = Background
 Instance.new("UICorner",Card).CornerRadius = UDim.new(0,25)
 
--- TITLE
+-- 🔥 TITLE (HACKER TYPING)
 local Title = Instance.new("TextLabel")
 Title.Size = UDim2.new(1,-20,0,30)
 Title.Position = UDim2.new(0,10,0,10)
 Title.BackgroundTransparency = 1
-Title.Text = "🍿 ICYDAMMIT LOADING 🍬"
 Title.TextColor3 = Color3.fromRGB(120,70,20)
 Title.Font = Enum.Font.GothamBold
+Title.TextSize = 16
+Title.Text = ""
 Title.Parent = Card
 
--- 🍬 CANDY RAIN
+local fullText = "🍿 ICYDAMMIT LOADING 🍬"
+
+task.spawn(function()
+    while true do
+        -- typing
+        for i = 1, #fullText do
+            Title.Text = string.sub(fullText, 1, i) .. "_"
+            task.wait(0.05)
+        end
+
+        -- cursor blink setelah selesai
+        for i = 1, 6 do
+            Title.Text = fullText .. "_"
+            task.wait(0.3)
+            Title.Text = fullText
+            task.wait(0.3)
+        end
+
+        -- reset (loop ulang biar terus hidup)
+        Title.Text = ""
+        task.wait(0.5)
+    end
+end)
+
+-- 🍬 CANDY + POPCORN RAIN
 local candyEmojis = {"🍬","🍭","🍫","🍩","🍪","🍿","✨"}
 
 task.spawn(function()
@@ -115,7 +137,7 @@ task.spawn(function()
     end
 end)
 
--- PROGRESS
+-- PROGRESS BAR
 local bar = Instance.new("Frame")
 bar.Size = UDim2.new(1,-40,0,6)
 bar.Position = UDim2.new(0,20,0,350)
@@ -133,6 +155,7 @@ text.Position = UDim2.new(0,0,0,360)
 text.BackgroundTransparency = 1
 text.Text = "0%"
 text.TextColor3 = Color3.fromRGB(120,70,20)
+text.Font = Enum.Font.GothamBold
 text.Parent = Card
 
 -- progress anim
@@ -144,4 +167,4 @@ while progress < 96.2 do
     task.wait(0.05)
 end
 
-text.Text = "96.2%"
+text.Text = "99.2%"
