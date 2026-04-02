@@ -1,5 +1,5 @@
 -- Loading Screen | icydammit
--- Popcorn + Candy Theme (HACKER TYPING EDITION)
+-- Popcorn + Candy Theme (FINAL TERMINAL VERSION)
 
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
@@ -30,7 +30,7 @@ grad.Color = ColorSequence.new{
     ColorSequenceKeypoint.new(1, Color3.fromRGB(80,50,20))
 }
 
--- 🍬 BYPASS (KIRI)
+-- BYPASS (LEFT)
 local BypassText = Instance.new("TextLabel")
 BypassText.Size = UDim2.new(0,150,0,40)
 BypassText.Position = UDim2.new(0,20,0.35,0)
@@ -51,7 +51,7 @@ task.spawn(function()
     end
 end)
 
--- 🍭 PROCESSING (KANAN)
+-- PROCESSING (RIGHT)
 local ProcessingText = Instance.new("TextLabel")
 ProcessingText.Size = UDim2.new(0,220,0,40)
 ProcessingText.Position = UDim2.new(1,-240,0.35,0)
@@ -72,7 +72,7 @@ task.spawn(function()
     end
 end)
 
--- 🍿 CARD
+-- CARD
 local Card = Instance.new("Frame")
 Card.Size = UDim2.new(0,380,0,440)
 Card.Position = UDim2.new(0.5,-190,0.5,-220)
@@ -80,7 +80,7 @@ Card.BackgroundColor3 = Color3.fromRGB(255,235,200)
 Card.Parent = Background
 Instance.new("UICorner",Card).CornerRadius = UDim.new(0,25)
 
--- 🔥 TITLE (HACKER TYPING)
+-- TITLE (HACKER TYPING)
 local Title = Instance.new("TextLabel")
 Title.Size = UDim2.new(1,-20,0,30)
 Title.Position = UDim2.new(0,10,0,10)
@@ -95,13 +95,11 @@ local fullText = "🍿 ICYDAMMIT LOADING 🍬"
 
 task.spawn(function()
     while true do
-        -- typing
         for i = 1, #fullText do
             Title.Text = string.sub(fullText, 1, i) .. "_"
             task.wait(0.05)
         end
 
-        -- cursor blink setelah selesai
         for i = 1, 6 do
             Title.Text = fullText .. "_"
             task.wait(0.3)
@@ -109,13 +107,84 @@ task.spawn(function()
             task.wait(0.3)
         end
 
-        -- reset (loop ulang biar terus hidup)
         Title.Text = ""
         task.wait(0.5)
     end
 end)
 
--- 🍬 CANDY + POPCORN RAIN
+-- LOG FRAME (TERMINAL STYLE)
+local LogFrame = Instance.new("Frame")
+LogFrame.Size = UDim2.new(1,-25,0,200)
+LogFrame.Position = UDim2.new(0,12,0,80)
+LogFrame.BackgroundColor3 = Color3.fromRGB(255,220,170)
+LogFrame.BackgroundTransparency = 0.3
+LogFrame.Parent = Card
+Instance.new("UICorner", LogFrame).CornerRadius = UDim.new(0,10)
+
+local layout = Instance.new("UIListLayout", LogFrame)
+layout.SortOrder = Enum.SortOrder.LayoutOrder
+
+local logLines = {}
+local logIndex = 0
+
+-- TYPE LOG FUNCTION (🔥 INI YANG KAMU MAU)
+local function typeLine(text, color)
+    logIndex += 1
+    
+    local line = Instance.new("TextLabel")
+    line.Size = UDim2.new(1, 0, 0, 14)
+    line.BackgroundTransparency = 1
+    line.Text = ""
+    line.TextColor3 = color or Color3.fromRGB(120,70,20)
+    line.TextSize = 9
+    line.Font = Enum.Font.Code
+    line.TextXAlignment = Enum.TextXAlignment.Left
+    line.LayoutOrder = logIndex
+    line.Parent = LogFrame
+
+    table.insert(logLines, line)
+
+    -- typing effect
+    for i = 1, #text do
+        line.Text = string.sub(text, 1, i) .. "_"
+        task.wait(0.01)
+    end
+
+    line.Text = text
+
+    -- limit
+    if #logLines > 12 then
+        local old = table.remove(logLines, 1)
+        old:Destroy()
+    end
+end
+
+-- LOG DATA
+local logMessages = {
+    "[SUCCESS] Candy module initialized.",
+    "Pouring sugar crystals...",
+    "Mixing sweet ingredients...",
+    "Adding rainbow sprinkles...",
+    "[SUCCESS] Candy core loaded.",
+    "Preparing candy wrapper...",
+    "Inserting sweet payload...",
+    "[SUCCESS] Sweet module verified.",
+    "Adding lollipop effect...",
+    "Finalizing candy coating...",
+    "[SUCCESS] Lollipop verified.",
+}
+
+-- LOOP LOG (🔥 STREAM EFFECT)
+task.spawn(function()
+    while true do
+        for _, msg in ipairs(logMessages) do
+            typeLine(msg)
+            task.wait(math.random(0.2,0.5))
+        end
+    end
+end)
+
+-- CANDY RAIN
 local candyEmojis = {"🍬","🍭","🍫","🍩","🍪","🍿","✨"}
 
 task.spawn(function()
@@ -137,7 +206,7 @@ task.spawn(function()
     end
 end)
 
--- PROGRESS BAR
+-- PROGRESS
 local bar = Instance.new("Frame")
 bar.Size = UDim2.new(1,-40,0,6)
 bar.Position = UDim2.new(0,20,0,350)
@@ -158,7 +227,6 @@ text.TextColor3 = Color3.fromRGB(120,70,20)
 text.Font = Enum.Font.GothamBold
 text.Parent = Card
 
--- progress anim
 local progress = 0
 while progress < 96.2 do
     progress += 0.5
@@ -167,4 +235,4 @@ while progress < 96.2 do
     task.wait(0.05)
 end
 
-text.Text = "99.2%"
+text.Text = "96.2%"
