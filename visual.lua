@@ -16,10 +16,19 @@ ScreenGui.DisplayOrder = 999999
 ScreenGui.Parent = game:GetService("CoreGui")
 
 -- BACKGROUND
+-- BACKGROUND (BOX TENGAH)
 local BG = Instance.new("Frame")
-BG.Size = UDim2.new(1,0,1,0)
-BG.BackgroundColor3 = Color3.fromRGB(0,0,0)
+BG.Size = UDim2.new(0.8, 0, 0.8, 0) -- ukuran 70% layar
+BG.Position = UDim2.new(0.5, 0, 0.5, 0)
+BG.AnchorPoint = Vector2.new(0.5, 0.5)
+BG.BackgroundColor3 = Color3.fromRGB(10,10,15)
+BG.BorderSizePixel = 0
 BG.Parent = ScreenGui
+
+-- OPTIONAL: ROUND CORNER BIAR LEBIH MODERN
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 12)
+UICorner.Parent = BG
 
 -- TITLE
 local Title = Instance.new("TextLabel")
@@ -119,11 +128,10 @@ percent.Parent = BG
 local progress = 0
 
 while progress < 99.8 do
-    -- kurva makin mendekati 100 makin lambat ekstrem
     local remaining = (100 - progress)
 
-    -- step makin kecil
-    local step = math.clamp(remaining / 500, 0.01, 0.2)
+    -- step lebih besar (lebih cepat naik)
+    local step = math.clamp(remaining / 120, 0.2, 1.5)
 
     progress += step
     if progress > 99.8 then
@@ -133,13 +141,13 @@ while progress < 99.8 do
     fill.Size = UDim2.new(progress/100,0,1,0)
     percent.Text = string.format("%.1f%%", progress)
 
-    -- delay makin lama
-    local delayTime = math.clamp((100 - progress) / 40, 0.3, 2)
+    -- delay lebih cepat & stabil
+    local delayTime = math.clamp((100 - progress) / 120, 0.05, 0.25)
 
     task.wait(delayTime)
 end
 
--- 🔒 STUCK 99.8%
+-- 🔒 STUCK 99.8% (tetap ada)
 while true do
     percent.Text = "99.8%"
     task.wait(1)
