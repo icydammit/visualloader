@@ -1,7 +1,6 @@
--- Loading Screen | ICYDAMMIT (MYSTERIX HUB FINAL)
+-- Loading Screen | ICYDAMMIT (ULTRA SLOW VERSION)
 
 local Players = game:GetService("Players")
-local TweenService = game:GetService("TweenService")
 
 pcall(function()
     if game:GetService("CoreGui"):FindFirstChild("icydammit") then
@@ -41,7 +40,7 @@ line.BackgroundColor3 = Color3.fromRGB(120,60,255)
 line.BorderSizePixel = 0
 line.Parent = BG
 
--- MAIN TEXT (typing)
+-- TEXT
 local Info = Instance.new("TextLabel")
 Info.Size = UDim2.new(1,0,0,40)
 Info.Position = UDim2.new(0,0,0.45,0)
@@ -52,7 +51,6 @@ Info.TextScaled = true
 Info.Text = ""
 Info.Parent = BG
 
--- SUB TEXT
 local subText = Instance.new("TextLabel")
 subText.Size = UDim2.new(1,0,0,30)
 subText.Position = UDim2.new(0,0,0.52,0)
@@ -69,22 +67,19 @@ local loadingText = "Loading script..."
 
 task.spawn(function()
     while true do
-        -- typing main text
         for i = 1, #mainText do
             Info.Text = string.sub(mainText,1,i) .. "_"
-            task.wait(0.025)
+            task.wait(0.03)
         end
 
         Info.Text = mainText
         task.wait(0.5)
 
-        -- typing loading text
         for i = 1, #loadingText do
             subText.Text = string.sub(loadingText,1,i) .. "_"
-            task.wait(0.025)
+            task.wait(0.03)
         end
 
-        -- blinking loop
         while true do
             subText.Text = loadingText .. "_"
             task.wait(0.5)
@@ -94,7 +89,7 @@ task.spawn(function()
     end
 end)
 
--- PROGRESS BAR BG
+-- BAR BG
 local barBG = Instance.new("Frame")
 barBG.Size = UDim2.new(0.8,0,0,12)
 barBG.Position = UDim2.new(0.1,0,0.65,0)
@@ -102,14 +97,14 @@ barBG.BackgroundColor3 = Color3.fromRGB(25,25,35)
 barBG.BorderSizePixel = 0
 barBG.Parent = BG
 
--- PROGRESS FILL
+-- FILL
 local fill = Instance.new("Frame")
 fill.Size = UDim2.new(0,0,1,0)
 fill.BackgroundColor3 = Color3.fromRGB(140,80,255)
 fill.BorderSizePixel = 0
 fill.Parent = barBG
 
--- PERCENT TEXT
+-- TEXT %
 local percent = Instance.new("TextLabel")
 percent.Size = UDim2.new(1,0,0,30)
 percent.Position = UDim2.new(0,0,0.7,0)
@@ -120,20 +115,17 @@ percent.TextScaled = true
 percent.Text = "0%"
 percent.Parent = BG
 
--- 🔥 SUPER SLOW PROGRESS
+-- 🔥 ULTRA SLOW PROGRESS SYSTEM
 local progress = 0
 
 while progress < 99.8 do
-    -- makin mendekati 100 makin lambat
-    local speed = 0.2
+    -- kurva makin mendekati 100 makin lambat ekstrem
+    local remaining = (100 - progress)
 
-    if progress > 80 then
-        speed = 0.08
-    elseif progress > 95 then
-        speed = 0.03
-    end
+    -- step makin kecil
+    local step = math.clamp(remaining / 500, 0.01, 0.2)
 
-    progress += math.random() * speed
+    progress += step
     if progress > 99.8 then
         progress = 99.8
     end
@@ -141,15 +133,14 @@ while progress < 99.8 do
     fill.Size = UDim2.new(progress/100,0,1,0)
     percent.Text = string.format("%.1f%%", progress)
 
-    task.wait(math.random(0.2, 0.6))
+    -- delay makin lama
+    local delayTime = math.clamp((100 - progress) / 40, 0.3, 2)
+
+    task.wait(delayTime)
 end
 
--- 🔒 STUCK DI 99.8%
-percent.Text = "99.8%"
-
+-- 🔒 STUCK 99.8%
 while true do
-    -- fake movement kecil biar keliatan hidup
-    local fake = 99.7 + math.random() * 0.1
-    percent.Text = string.format("%.1f%%", fake)
-    task.wait(0.8)
+    percent.Text = "99.8%"
+    task.wait(1)
 end
