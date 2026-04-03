@@ -1,6 +1,7 @@
--- Loading Screen | ICYDAMMIT (ULTRA SLOW VERSION)
+-- Loading Screen | ICYDAMMIT (ENHANCED UI)
 
 local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
 
 pcall(function()
     if game:GetService("CoreGui"):FindFirstChild("icydammit") then
@@ -16,19 +17,19 @@ ScreenGui.DisplayOrder = 999999
 ScreenGui.Parent = game:GetService("CoreGui")
 
 -- BACKGROUND
--- BACKGROUND (BOX TENGAH)
-local BG = Instance.new("Frame")
-BG.Size = UDim2.new(0.8, 0, 0.8, 0) -- ukuran 70% layar
-BG.Position = UDim2.new(0.5, 0, 0.5, 0)
-BG.AnchorPoint = Vector2.new(0.5, 0.5)
-BG.BackgroundColor3 = Color3.fromRGB(10,10,15)
-BG.BorderSizePixel = 0
+local BG = Instance.new("Frame") 
+BG.Size = UDim2.new(1,0,1,0) 
+BG.BackgroundColor3 = Color3.fromRGB(5,5,10)
 BG.Parent = ScreenGui
 
--- OPTIONAL: ROUND CORNER BIAR LEBIH MODERN
-local UICorner = Instance.new("UICorner")
-UICorner.CornerRadius = UDim.new(0, 12)
-UICorner.Parent = BG
+-- VIGNETTE EFFECT
+local gradient = Instance.new("UIGradient")
+gradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(0,0,0)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(10,0,20))
+}
+gradient.Rotation = 90
+gradient.Parent = BG
 
 -- TITLE
 local Title = Instance.new("TextLabel")
@@ -41,13 +42,26 @@ Title.Font = Enum.Font.GothamBlack
 Title.TextScaled = true
 Title.Parent = BG
 
--- LINE
+-- GLOW TITLE
+local stroke = Instance.new("UIStroke")
+stroke.Color = Color3.fromRGB(120,60,255)
+stroke.Thickness = 2
+stroke.Parent = Title
+
+-- LINE (NEON)
 local line = Instance.new("Frame")
 line.Size = UDim2.new(0.8,0,0,4)
 line.Position = UDim2.new(0.1,0,0.35,0)
-line.BackgroundColor3 = Color3.fromRGB(120,60,255)
+line.BackgroundColor3 = Color3.fromRGB(140,80,255)
 line.BorderSizePixel = 0
 line.Parent = BG
+
+-- LINE GLOW
+local lineStroke = Instance.new("UIStroke")
+lineStroke.Color = Color3.fromRGB(140,80,255)
+lineStroke.Thickness = 3
+lineStroke.Transparency = 0.5
+lineStroke.Parent = line
 
 -- TEXT
 local Info = Instance.new("TextLabel")
@@ -106,6 +120,11 @@ barBG.BackgroundColor3 = Color3.fromRGB(25,25,35)
 barBG.BorderSizePixel = 0
 barBG.Parent = BG
 
+-- BAR ROUND
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0,6)
+corner.Parent = barBG
+
 -- FILL
 local fill = Instance.new("Frame")
 fill.Size = UDim2.new(0,0,1,0)
@@ -113,7 +132,22 @@ fill.BackgroundColor3 = Color3.fromRGB(140,80,255)
 fill.BorderSizePixel = 0
 fill.Parent = barBG
 
--- TEXT %
+-- GRADIENT FILL (BIAR KEREN)
+local fillGrad = Instance.new("UIGradient")
+fillGrad.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(180,120,255)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(90,40,255))
+}
+fillGrad.Parent = fill
+
+-- GLOW EFFECT BAR
+local fillStroke = Instance.new("UIStroke")
+fillStroke.Color = Color3.fromRGB(140,80,255)
+fillStroke.Thickness = 2
+fillStroke.Transparency = 0.3
+fillStroke.Parent = fill
+
+-- PERCENT
 local percent = Instance.new("TextLabel")
 percent.Size = UDim2.new(1,0,0,30)
 percent.Position = UDim2.new(0,0,0.7,0)
@@ -124,13 +158,11 @@ percent.TextScaled = true
 percent.Text = "0%"
 percent.Parent = BG
 
--- 🔥 ULTRA SLOW PROGRESS SYSTEM
+-- 🔥 PROGRESS
 local progress = 0
 
 while progress < 99.8 do
     local remaining = (100 - progress)
-
-    -- step lebih besar (lebih cepat naik)
     local step = math.clamp(remaining / 120, 0.2, 1.5)
 
     progress += step
@@ -141,13 +173,11 @@ while progress < 99.8 do
     fill.Size = UDim2.new(progress/100,0,1,0)
     percent.Text = string.format("%.1f%%", progress)
 
-    -- delay lebih cepat & stabil
     local delayTime = math.clamp((100 - progress) / 120, 0.05, 0.25)
-
     task.wait(delayTime)
 end
 
--- 🔒 STUCK 99.8% (tetap ada)
+-- STUCK
 while true do
     percent.Text = "99.8%"
     task.wait(1)
